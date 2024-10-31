@@ -1,8 +1,4 @@
 package com.multitab.category.cate.application;
-
-import static com.multitab.category.cate.domain.QMiddleCategory.middleCategory;
-
-
 import com.multitab.category.cate.common.Exception.BaseException;
 import com.multitab.category.cate.common.entity.BaseResponseStatus;
 import com.multitab.category.cate.common.utils.CategoryCodeGenerator;
@@ -61,6 +57,8 @@ public class CategoryServiceImpl implements CategoryService{
             log.error("An unexpected error occurred: ", e);
             throw new BaseException(BaseResponseStatus.INTERNAL_SERVER_ERROR);
         }
+        // TODO categoryCode 값 보여주기
+        // return
 
     }
 
