@@ -45,11 +45,11 @@ public class CategoryController {
             @RequestBody TopCategoryRequestVo topCategoryRequestVo) {
 
         log.info("topCategoryRequestVo : {}", topCategoryRequestVo);
-        TopCategoryRequestDto topCategoryRequestDto = TopCategoryRequestDto.builder()
-                .topCategoryName(topCategoryRequestVo.getTopCategoryName())
-                .topCategoryDescription(topCategoryRequestVo.getTopCategoryDescription())
-                .build();
-        categoryService.createTopCategory(topCategoryRequestDto);
+//        TopCategoryRequestDto topCategoryRequestDto = TopCategoryRequestDto.builder()
+//                .topCategoryName(topCategoryRequestVo.getTopCategoryName())
+//                .topCategoryDescription(topCategoryRequestVo.getTopCategoryDescription())
+//                .build();
+//        categoryService.createTopCategory(topCategoryRequestDto);
         return new BaseResponse<>(BaseResponseStatus.SUCCESS);
     }
 

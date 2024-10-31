@@ -5,7 +5,6 @@ import com.multitab.category.cate.common.entity.BaseResponse;
 import com.multitab.category.cate.common.entity.BaseResponseStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -30,12 +29,7 @@ public class BaseExceptionHandler {
      *
      * @return FAILED_TO_LOGIN 에러 response
      */
-    @ExceptionHandler(BadCredentialsException.class)
-    protected ResponseEntity<BaseResponse<Void>> handleBadCredentialsException(BadCredentialsException e) {
-        BaseResponse<Void> response = new BaseResponse<>(BaseResponseStatus.FAILED_TO_LOGIN);
-        log.error("BadCredentialsException: ", e);
-        return new ResponseEntity<>(response, response.httpStatus());
-    }
+
 
     @ExceptionHandler(RuntimeException.class)
     protected ResponseEntity<BaseResponse<Void>> RuntimeError(RuntimeException e) {
