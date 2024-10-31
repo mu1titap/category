@@ -11,6 +11,6 @@ public class TopCategoryResponseVo {
 
     private String topCategoryCode;
     private String topCategoryName;
-    private String topCategoryDescription;
+    private Integer topCategoryOrder;
 
 }

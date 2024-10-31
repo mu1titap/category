@@ -13,7 +13,7 @@ public class MiddleCategoryResponseVo {
 
     private String middleCategoryCode;
     private String middleCategoryName;
-    private String middleCategoryDescription;
+    private Integer middleCategoryOrder;
     private String topCategoryCode;
 
 }

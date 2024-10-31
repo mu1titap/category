@@ -30,7 +30,7 @@ public class CategorySearchImpl implements  CategorySearch{
         return queryFactory
                 .select(new QMainCategoryResponseDto(topCategory.categoryCode,
                                                      topCategory.categoryName,
-                                                     topCategory.imageUrl))
+                                                    topCategory.categoryName))
                 .from(topCategory)
                 .orderBy(topCategory.categoryName.asc())
                 .fetch();

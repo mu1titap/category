@@ -13,23 +13,23 @@ import lombok.NoArgsConstructor;
 public class MiddleCategoryResponseDto {
 
     private String middleCategoryName;
-    private String middleCategoryDescription;
+    private Integer middleCategoryOrder;
     private String middleCategoryCode;
     private String topCategoryCode;
 
     public MiddleCategoryResponseVo toVo() {
         return MiddleCategoryResponseVo.builder()
                 .middleCategoryName(middleCategoryName)
-                .middleCategoryDescription(middleCategoryDescription)
+                .middleCategoryOrder(middleCategoryOrder)
                 .middleCategoryCode(middleCategoryCode)
                 .topCategoryCode(topCategoryCode)
                 .build();
     }
     @QueryProjection
-    public MiddleCategoryResponseDto(String middleCategoryName, String middleCategoryDescription,
+    public MiddleCategoryResponseDto(String middleCategoryName, Integer middleCategoryOrder,
                                      String middleCategoryCode, String topCategoryCode) {
         this.middleCategoryName = middleCategoryName;
-        this.middleCategoryDescription = middleCategoryDescription;
+        this.middleCategoryOrder = middleCategoryOrder;
         this.middleCategoryCode = middleCategoryCode;
         this.topCategoryCode = topCategoryCode;
     }

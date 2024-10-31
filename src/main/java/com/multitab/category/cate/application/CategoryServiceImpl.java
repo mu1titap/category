@@ -1,5 +1,8 @@
 package com.multitab.category.cate.application;
 
+import static com.multitab.category.cate.domain.QMiddleCategory.middleCategory;
+
+
 import com.multitab.category.cate.common.Exception.BaseException;
 import com.multitab.category.cate.common.entity.BaseResponseStatus;
 import com.multitab.category.cate.common.utils.CategoryCodeGenerator;
@@ -165,7 +168,7 @@ public class CategoryServiceImpl implements CategoryService{
             log.info("topCategory : {}", topCategory);
             return TopCategoryResponseDto.builder()
                     .topCategoryName(topCategory.getCategoryName())
-                    .topCategoryDescription(topCategory.getCategoryDescription())
+                    .topCategoryOrder(topCategory.getCategoryOrder())
                     .topCategoryCode(topCategory.getCategoryCode())
                     .build();
         } catch (Exception e) {
@@ -192,7 +195,7 @@ public class CategoryServiceImpl implements CategoryService{
             log.info("middleCategory : {}", middleCategory);
             return MiddleCategoryResponseDto.builder()
                     .middleCategoryName(middleCategory.getCategoryName())
-                    .middleCategoryDescription(middleCategory.getCategoryDescription())
+                    .middleCategoryOrder(middleCategory.getCategoryOrder())
                     .middleCategoryCode(middleCategory.getCategoryCode())
                     .topCategoryCode(middleCategory.getTopCategory().getCategoryCode())
                     .build();
@@ -236,7 +239,7 @@ public class CategoryServiceImpl implements CategoryService{
         return topCategoryRepository.findAll().stream().map(
                 topCategory -> TopCategoryResponseDto.builder()
                         .topCategoryName(topCategory.getCategoryName())
-                        .topCategoryDescription(topCategory.getCategoryDescription())
+                        .topCategoryOrder(topCategory.getCategoryOrder())
                         .topCategoryCode(topCategory.getCategoryCode())
                         .build()
         ).toList();
@@ -259,7 +262,7 @@ public class CategoryServiceImpl implements CategoryService{
                     .stream()
                     .map(middleCategory -> MiddleCategoryResponseDto.builder()
                             .middleCategoryName(middleCategory.getCategoryName())
-                            .middleCategoryDescription(middleCategory.getCategoryDescription())
+                            .middleCategoryOrder(middleCategory.getCategoryOrder())
                             .middleCategoryCode(middleCategory.getCategoryCode())
                             .topCategoryCode(middleCategory.getTopCategory().getCategoryCode())
                             .build())

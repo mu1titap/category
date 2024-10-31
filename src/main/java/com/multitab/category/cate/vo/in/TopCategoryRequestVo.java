@@ -8,6 +8,6 @@ import lombok.ToString;
 public class TopCategoryRequestVo {
 
     private String topCategoryName;
-    private String topCategoryDescription;
+    private Integer categoryOrder;
 
 }
