@@ -6,18 +6,14 @@ import static com.multitab.category.cate.domain.QMiddleCategory.middleCategory;
 import com.multitab.category.cate.common.Exception.BaseException;
 import com.multitab.category.cate.common.entity.BaseResponseStatus;
 import com.multitab.category.cate.common.utils.CategoryCodeGenerator;
-import com.multitab.category.cate.domain.BottomCategory;
 import com.multitab.category.cate.domain.MiddleCategory;
 import com.multitab.category.cate.domain.TopCategory;
-import com.multitab.category.cate.dto.in.BottomCategoryRequestDto;
 import com.multitab.category.cate.dto.in.MiddleCategoryRequestDto;
 import com.multitab.category.cate.dto.in.TopCategoryRequestDto;
-import com.multitab.category.cate.dto.out.BottomCategoryResponseDto;
 import com.multitab.category.cate.dto.out.ChildCategoryResponseDto;
 import com.multitab.category.cate.dto.out.MainCategoryResponseDto;
 import com.multitab.category.cate.dto.out.MiddleCategoryResponseDto;
 import com.multitab.category.cate.dto.out.TopCategoryResponseDto;
-import com.multitab.category.cate.infrastructure.BottomCategoryRepository;
 import com.multitab.category.cate.infrastructure.MiddleCategoryRepository;
 import com.multitab.category.cate.infrastructure.TopCategoryRepository;
 import com.multitab.category.cate.infrastructure.search.CategorySearch;
@@ -36,7 +32,6 @@ public class CategoryServiceImpl implements CategoryService{
 
     private final TopCategoryRepository topCategoryRepository;
     private final MiddleCategoryRepository middleCategoryRepository;
-    private final BottomCategoryRepository bottomCategoryRepository;
     private final CategorySearch categorySearch;
 
 
@@ -95,31 +90,6 @@ public class CategoryServiceImpl implements CategoryService{
 
     }
 
-    @Transactional
-    @Override
-    public void createBottomCategory(BottomCategoryRequestDto bottomCategoryRequestDto) {
-
-        if( bottomCategoryRepository.existsByCategoryName(bottomCategoryRequestDto.getBottomCategoryName()) ){
-            throw new BaseException(BaseResponseStatus.DUPLICATED_CATEGORY_NAME);
-        }
-
-        try {
-            MiddleCategory middleCategory = middleCategoryRepository.findByCategoryCode(
-                    bottomCategoryRequestDto.getMiddleCategoryCode()).orElseThrow(
-                    () -> new BaseException(BaseResponseStatus.NO_EXIST_CATEGORY)
-            );
-
-            String categoryCode = generateUniqueCategoryCode("BC-");
-            bottomCategoryRepository.save(bottomCategoryRequestDto.toEntity(middleCategory, categoryCode));
-        } catch (IllegalArgumentException e) {
-            log.warn("Validation failed: {}", e.getMessage());
-            throw new BaseException(BaseResponseStatus.INTERNAL_SERVER_ERROR);
-        } catch (Exception e) {
-            log.error("An unexpected error occurred: ", e);
-            throw new BaseException(BaseResponseStatus.INTERNAL_SERVER_ERROR);
-        }
-
-    }
 
     @Override
     public void updateTopCategory(TopCategoryRequestDto topCategoryRequestDto) {
@@ -131,10 +101,6 @@ public class CategoryServiceImpl implements CategoryService{
 
     }
 
-    @Override
-    public void updateBottomCategory(BottomCategoryRequestDto bottomCategoryRequestDto) {
-
-    }
 
     @Override
     public void deleteTopCategory(Long topCategoryId) {
@@ -206,33 +172,6 @@ public class CategoryServiceImpl implements CategoryService{
 
     }
 
-    @Override
-    public BottomCategoryResponseDto getBottomCategory(Long bottomCategoryId) {
-        return null;
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public BottomCategoryResponseDto getBottomCategoryByCategoryCode(String bottomCategoryCode) {
-
-        try {
-            BottomCategory bottomCategory = bottomCategoryRepository
-                    .findByCategoryCode(bottomCategoryCode).orElseThrow(
-                    () -> new BaseException(BaseResponseStatus.NO_EXIST_CATEGORY)
-            );
-            log.info("bottomCategory : {}", bottomCategory);
-            return BottomCategoryResponseDto.builder()
-                    .bottomCategoryName(bottomCategory.getCategoryName())
-                    .bottomCategoryDescription(bottomCategory.getCategoryDescription())
-                    .bottomCategoryCode(bottomCategory.getCategoryCode())
-                    .middleCategoryCode(bottomCategory.getMiddleCategory().getCategoryCode())
-                    .build();
-        } catch (Exception e) {
-            log.error("error : {}", e);
-        }
-        return null;
-
-    }
 
     @Override
     public List<TopCategoryResponseDto> getTopCategories() {
@@ -280,37 +219,6 @@ public class CategoryServiceImpl implements CategoryService{
         }
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public List<BottomCategoryResponseDto> getBottomCategories(String middleCategoryCode) {
-
-        try {
-            MiddleCategory middleCategory = middleCategoryRepository.findByCategoryCode(middleCategoryCode)
-                    .orElseThrow(
-                    () -> new BaseException(BaseResponseStatus.NO_EXIST_CATEGORY)
-            );
-            List<BottomCategory> bottomCategories = bottomCategoryRepository
-                    .findByMiddleCategoryCategoryCode(middleCategory.getCategoryCode());
-            log.info("bottomCategories : {}", bottomCategories);
-            return bottomCategories.stream().map(
-                    bottomCategory -> BottomCategoryResponseDto.builder()
-                            .bottomCategoryName(bottomCategory.getCategoryName())
-                            .bottomCategoryDescription(bottomCategory.getCategoryDescription())
-                            .bottomCategoryCode(bottomCategory.getCategoryCode())
-                            .middleCategoryCode(bottomCategory.getMiddleCategory().getCategoryCode())
-                            .build()
-            ).collect(Collectors.toList());
-
-        } catch (IllegalArgumentException e) {
-            log.warn("Validation failed: {}", e.getMessage());
-            throw new BaseException(BaseResponseStatus.INTERNAL_SERVER_ERROR);
-        } catch (Exception e) {
-            log.error("An unexpected error occurred: ", e);
-            throw new BaseException(BaseResponseStatus.INTERNAL_SERVER_ERROR);
-        }
-
-    }
-
     @Override
     public List<ChildCategoryResponseDto> findChildCategoriesByTopCategory(String categoryCode) {
         return categorySearch.findChildCategoriesByTopCategory(categoryCode);
@@ -327,11 +235,6 @@ public class CategoryServiceImpl implements CategoryService{
                     break;
                 case "MC-":
                     if (!middleCategoryRepository.existsByCategoryCode(categoryCode)) {
-                        return categoryCode;  // 중복이 없으면 코드 반환
-                    }
-                    break;
-                case "BC-":
-                    if (!bottomCategoryRepository.existsByCategoryCode(categoryCode)) {
                         return categoryCode;  // 중복이 없으면 코드 반환
                     }
                     break;

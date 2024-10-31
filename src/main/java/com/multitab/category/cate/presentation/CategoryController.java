@@ -3,11 +3,9 @@ package com.multitab.category.cate.presentation;
 import com.multitab.category.cate.application.CategoryService;
 import com.multitab.category.cate.common.entity.BaseResponse;
 import com.multitab.category.cate.common.entity.BaseResponseStatus;
-import com.multitab.category.cate.dto.in.BottomCategoryRequestDto;
 import com.multitab.category.cate.dto.in.MiddleCategoryRequestDto;
 import com.multitab.category.cate.dto.in.TopCategoryRequestDto;
 import com.multitab.category.cate.dto.out.*;
-import com.multitab.category.cate.vo.in.BottomCategoryRequestVo;
 import com.multitab.category.cate.vo.in.MiddleCategoryRequestVo;
 import com.multitab.category.cate.vo.in.TopCategoryRequestVo;
 import com.multitab.category.cate.vo.out.*;
@@ -27,16 +25,6 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    // 메인 카테고리 조회
-    @Operation(summary = "메인 카테고리 조회", description = "메인 카테고리(코드,이름,이미지) 조회")
-    @GetMapping("/main")
-    public BaseResponse<List<MainCategoryResponseVo>> findMainCategoryResponseDtoV1() {
-        List<MainCategoryResponseVo> res = categoryService.findMainCategoryResponseDto()
-                .stream()
-                .map(MainCategoryResponseDto::toVo)
-                .toList();
-        return new BaseResponse<>(res);
-    }
 
     // 대 카테고리 생성
     @PostMapping("/top-category")
@@ -84,29 +72,6 @@ public class CategoryController {
         return new BaseResponse<>(categoryService.getMiddleCategoryByCategoryCode(middleCategoryCode).toVo());
     }
 
-    @PostMapping("/bottom-category")
-    public BaseResponse<Void> createBottomCategory(
-            @RequestBody BottomCategoryRequestVo bottomCategoryRequestVo) {
-
-        log.info("bottomCategoryRequestVo : {}", bottomCategoryRequestVo);
-        BottomCategoryRequestDto bottomCategoryRequestDto = BottomCategoryRequestDto.builder()
-                .bottomCategoryName(bottomCategoryRequestVo.getBottomCategoryName())
-                .bottomCategoryDescription(bottomCategoryRequestVo.getBottomCategoryDescription())
-                .middleCategoryCode(bottomCategoryRequestVo.getMiddleCategoryCode())
-                .build();
-        log.info("bottomCategoryRequestDto : {}", bottomCategoryRequestDto);
-        categoryService.createBottomCategory(bottomCategoryRequestDto);
-
-        return new BaseResponse<>(BaseResponseStatus.SUCCESS);
-    }
-
-    @GetMapping("/bottom-category/{bottomCategoryCode}")
-    public BaseResponse<BottomCategoryResponseVo> getBottomCategory(
-            @PathVariable("bottomCategoryCode") String bottomCategoryCode) {
-        log.info("bottomCategoryCode : {}", bottomCategoryCode);
-        return new BaseResponse<>(categoryService.getBottomCategoryByCategoryCode(bottomCategoryCode).toVo());
-    }
-
     @GetMapping("/top-categories")
     public BaseResponse<List<TopCategoryResponseVo>> getTopCategories() {
 
@@ -125,17 +90,6 @@ public class CategoryController {
                 categoryService.getMiddleCategories(topCategoryCode)
                         .stream()
                         .map(MiddleCategoryResponseDto::toVo)
-                        .collect(Collectors.toList()));
-    }
-
-    @GetMapping("/bottom-categories/{middleCategoryCode}")
-    public BaseResponse<List<BottomCategoryResponseVo>> getBottomCategories(
-            @PathVariable("middleCategoryCode") String middleCategoryCode) {
-
-        return new BaseResponse<>(
-                categoryService.getBottomCategories(middleCategoryCode)
-                        .stream()
-                        .map(BottomCategoryResponseDto::toVo)
                         .collect(Collectors.toList()));
     }
 
