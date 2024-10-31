@@ -8,7 +8,7 @@ import lombok.ToString;
 public class MiddleCategoryRequestVo {
 
     private String middleCategoryName;
-    private String middleCategoryDescription;
+    private Integer categoryOrder;
     private String topCategoryCode;
 
 }

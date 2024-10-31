@@ -45,11 +45,11 @@ public class CategoryController {
             @RequestBody TopCategoryRequestVo topCategoryRequestVo) {
 
         log.info("topCategoryRequestVo : {}", topCategoryRequestVo);
-//        TopCategoryRequestDto topCategoryRequestDto = TopCategoryRequestDto.builder()
-//                .topCategoryName(topCategoryRequestVo.getTopCategoryName())
-//                .topCategoryDescription(topCategoryRequestVo.getTopCategoryDescription())
-//                .build();
-//        categoryService.createTopCategory(topCategoryRequestDto);
+        TopCategoryRequestDto topCategoryRequestDto = TopCategoryRequestDto.builder()
+                .topCategoryName(topCategoryRequestVo.getTopCategoryName())
+                .categoryOrder(topCategoryRequestVo.getCategoryOrder())
+                .build();
+        categoryService.createTopCategory(topCategoryRequestDto);
         return new BaseResponse<>(BaseResponseStatus.SUCCESS);
     }
 
@@ -68,7 +68,7 @@ public class CategoryController {
 
         MiddleCategoryRequestDto middleCategoryRequestDto = MiddleCategoryRequestDto.builder()
                 .middleCategoryName(middleCategoryRequestVo.getMiddleCategoryName())
-                .middleCategoryDescription(middleCategoryRequestVo.getMiddleCategoryDescription())
+                .categoryOrder(middleCategoryRequestVo.getCategoryOrder())
                 .topCategoryCode(middleCategoryRequestVo.getTopCategoryCode())
                 .build();
         log.info("middleCategoryRequestDto : {}", middleCategoryRequestDto);
