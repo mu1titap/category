@@ -41,7 +41,7 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Transactional
     @Override
-    public void createTopCategory(TopCategoryRequestDto topCategoryRequestDto) {
+    public TopCategoryResponseDto createTopCategory(TopCategoryRequestDto topCategoryRequestDto) {
 
         if (topCategoryRepository.existsByCategoryName(topCategoryRequestDto.getTopCategoryName())) {
             throw new BaseException(BaseResponseStatus.DUPLICATED_CATEGORY_NAME);
@@ -57,8 +57,11 @@ public class CategoryServiceImpl implements CategoryService{
             log.error("An unexpected error occurred: ", e);
             throw new BaseException(BaseResponseStatus.INTERNAL_SERVER_ERROR);
         }
-        // TODO categoryCode 값 보여주기
-        // return
+        return TopCategoryResponseDto.builder()
+            .topCategoryName(topCategoryRequestDto.getTopCategoryName())
+               .topCategoryOrder(topCategoryRequestDto.getCategoryOrder())
+               .topCategoryCode(categoryCode)
+               .build();
 
     }
 

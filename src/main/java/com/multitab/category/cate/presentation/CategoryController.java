@@ -29,7 +29,7 @@ public class CategoryController {
     // 대 카테고리 생성
     @PostMapping("/top-category")
     @Operation(summary = "대 카테고리 생성", description = "대 카테고리 생성 카테고리명, 소개 입력")
-    public BaseResponse<Void> createTopCategory(
+    public BaseResponse<TopCategoryResponseVo> createTopCategory(
             @RequestBody TopCategoryRequestVo topCategoryRequestVo) {
 
         log.info("topCategoryRequestVo : {}", topCategoryRequestVo);
@@ -37,8 +37,8 @@ public class CategoryController {
                 .topCategoryName(topCategoryRequestVo.getTopCategoryName())
                 .categoryOrder(topCategoryRequestVo.getCategoryOrder())
                 .build();
-        categoryService.createTopCategory(topCategoryRequestDto);
-        return new BaseResponse<>(BaseResponseStatus.SUCCESS);
+        ;
+        return new BaseResponse<>(categoryService.createTopCategory(topCategoryRequestDto).toVo());
     }
 
     @Operation(summary = "대 카테고리 조회", description = "카테고리 코드로 대 카테고리 단건 조회")
