@@ -15,7 +15,7 @@ public interface CategoryService {
     List<MainCategoryResponseDto> findMainCategoryResponseDto();
 
     // 상 카테고리 생성
-    void createTopCategory(TopCategoryRequestDto topCategoryRequestDto);
+    TopCategoryResponseDto createTopCategory(TopCategoryRequestDto topCategoryRequestDto);
     // 중 카테고리 생성
     void createMiddleCategory(MiddleCategoryRequestDto middleCategoryRequestDto);
     // 하 카테고리 생성
