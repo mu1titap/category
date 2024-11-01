@@ -67,19 +67,20 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Transactional
     @Override
-    public void createMiddleCategory(MiddleCategoryRequestDto middleCategoryRequestDto) {
+    public MiddleCategoryResponseDto createMiddleCategory(MiddleCategoryRequestDto middleCategoryRequestDto) {
 
         if( middleCategoryRepository.existsByCategoryName(middleCategoryRequestDto.getMiddleCategoryName()) ){
             throw new BaseException(BaseResponseStatus.DUPLICATED_CATEGORY_NAME);
         }
 
+        String categoryCode = generateUniqueCategoryCode("MC-");
         try {
             TopCategory topCategory = topCategoryRepository.findByCategoryCode(
                     middleCategoryRequestDto.getTopCategoryCode()).orElseThrow(
                     () -> new BaseException(BaseResponseStatus.NO_EXIST_CATEGORY)
             );
 
-            String categoryCode = generateUniqueCategoryCode("MC-");
+
             middleCategoryRepository.save(middleCategoryRequestDto.toEntity(topCategory, categoryCode));
         } catch (IllegalArgumentException e) {
             log.warn("Validation failed: {}", e.getMessage());
@@ -88,13 +89,17 @@ public class CategoryServiceImpl implements CategoryService{
             log.error("An unexpected error occurred: ", e);
             throw new BaseException(BaseResponseStatus.INTERNAL_SERVER_ERROR);
         }
-
+        return MiddleCategoryResponseDto.builder()
+            .middleCategoryName(middleCategoryRequestDto.getMiddleCategoryName())
+               .middleCategoryOrder(middleCategoryRequestDto.getCategoryOrder())
+               .topCategoryCode(middleCategoryRequestDto.getTopCategoryCode())
+               .middleCategoryCode(categoryCode)
+               .build();
     }
 
 
     @Override
     public void updateTopCategory(TopCategoryRequestDto topCategoryRequestDto) {
-
     }
 
     @Override
@@ -113,19 +118,11 @@ public class CategoryServiceImpl implements CategoryService{
 
     }
 
-    @Override
-    public void deleteBottomCategory(Long bottomCategoryId) {
-
-    }
-
-    @Override
-    public TopCategoryResponseDto getTopCategory(Long topCategoryId) {
-        return null;
-    }
 
     @Transactional(readOnly = true)
     @Override
     public TopCategoryResponseDto getTopCategoryByCategoryCode(String topCategoryCode) {
+
 
         try {
             TopCategory topCategory = topCategoryRepository
@@ -145,10 +142,6 @@ public class CategoryServiceImpl implements CategoryService{
 
     }
 
-    @Override
-    public MiddleCategoryResponseDto getMiddleCategory(Long middleCategoryId) {
-        return null;
-    }
 
     @Transactional(readOnly = true)
     @Override

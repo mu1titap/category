@@ -17,7 +17,7 @@ public interface CategoryService {
     // 상 카테고리 생성
     TopCategoryResponseDto createTopCategory(TopCategoryRequestDto topCategoryRequestDto);
     // 중 카테고리 생성
-    void createMiddleCategory(MiddleCategoryRequestDto middleCategoryRequestDto);
+    MiddleCategoryResponseDto createMiddleCategory(MiddleCategoryRequestDto middleCategoryRequestDto);
     // 하 카테고리 생성
 
     void updateTopCategory(TopCategoryRequestDto topCategoryRequestDto);
@@ -25,13 +25,10 @@ public interface CategoryService {
 
     void deleteTopCategory(Long topCategoryId);
     void deleteMiddleCategory(Long middleCategoryId);
-    void deleteBottomCategory(Long bottomCategoryId);
 
-    TopCategoryResponseDto getTopCategory(Long topCategoryId);
+
     TopCategoryResponseDto getTopCategoryByCategoryCode(String topCategoryCode);
-    MiddleCategoryResponseDto getMiddleCategory(Long middleCategoryId);
     MiddleCategoryResponseDto getMiddleCategoryByCategoryCode(String middleCategoryCode);
-
 
     List<TopCategoryResponseDto> getTopCategories();
     List<MiddleCategoryResponseDto> getMiddleCategories(String topCategoryCode); // name -> code

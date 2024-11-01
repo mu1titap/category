@@ -51,7 +51,7 @@ public class CategoryController {
 
     @Operation(summary = "중 카테고리 생성", description = "중 카테고리 생성 카테고리명, 소개 , 대 카테고리 코드 입력")
     @PostMapping("/middle-category")
-    public BaseResponse<Void> createMiddleCategory(
+    public BaseResponse<MiddleCategoryResponseVo> createMiddleCategory(
             @RequestBody MiddleCategoryRequestVo middleCategoryRequestVo) {
 
         MiddleCategoryRequestDto middleCategoryRequestDto = MiddleCategoryRequestDto.builder()
@@ -60,11 +60,11 @@ public class CategoryController {
                 .topCategoryCode(middleCategoryRequestVo.getTopCategoryCode())
                 .build();
         log.info("middleCategoryRequestDto : {}", middleCategoryRequestDto);
-        categoryService.createMiddleCategory(middleCategoryRequestDto);
 
-        return new BaseResponse<>(BaseResponseStatus.SUCCESS);
+        return new BaseResponse<>(categoryService.createMiddleCategory(middleCategoryRequestDto).toVo());
     }
 
+    @Operation(summary = "중 카테고리의 조회")
     @GetMapping("/middle-category/{middleCategoryCode}")
     public BaseResponse<MiddleCategoryResponseVo> getMiddleCategory(
             @PathVariable("middleCategoryCode") String middleCategoryCode) {
@@ -72,6 +72,7 @@ public class CategoryController {
         return new BaseResponse<>(categoryService.getMiddleCategoryByCategoryCode(middleCategoryCode).toVo());
     }
 
+    @Operation(summary = "대 카테고리 목록 조회")
     @GetMapping("/top-categories")
     public BaseResponse<List<TopCategoryResponseVo>> getTopCategories() {
 
@@ -82,6 +83,7 @@ public class CategoryController {
                         .collect(Collectors.toList()));
     }
 
+    @Operation(summary = "대 카테고리의 자식 카테고리 목록 조회")
     @GetMapping("/middle-categories/{topCategoryCode}")
     public BaseResponse<List<MiddleCategoryResponseVo>> getMiddleCategories(
             @PathVariable("topCategoryCode") String topCategoryCode) {
