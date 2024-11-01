@@ -11,8 +11,6 @@ import java.util.List;
 
 public interface CategoryService {
 
-    // 메인 카테고리 조회
-    List<MainCategoryResponseDto> findMainCategoryResponseDto();
 
     // 상 카테고리 생성
     TopCategoryResponseDto createTopCategory(TopCategoryRequestDto topCategoryRequestDto);

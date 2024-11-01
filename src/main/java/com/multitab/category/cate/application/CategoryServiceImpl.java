@@ -7,7 +7,6 @@ import com.multitab.category.cate.domain.TopCategory;
 import com.multitab.category.cate.dto.in.MiddleCategoryRequestDto;
 import com.multitab.category.cate.dto.in.TopCategoryRequestDto;
 import com.multitab.category.cate.dto.out.ChildCategoryResponseDto;
-import com.multitab.category.cate.dto.out.MainCategoryResponseDto;
 import com.multitab.category.cate.dto.out.MiddleCategoryResponseDto;
 import com.multitab.category.cate.dto.out.TopCategoryResponseDto;
 import com.multitab.category.cate.infrastructure.MiddleCategoryRepository;
@@ -32,12 +31,6 @@ public class CategoryServiceImpl implements CategoryService{
 
 
     private static final int MAX_CODE_TRIES = 5;  // 최대 재시도 횟수
-
-    @Transactional(readOnly = true)
-    @Override
-    public List<MainCategoryResponseDto> findMainCategoryResponseDto() {
-        return categorySearch.findMainCategoryResponseDto();
-    }
 
     @Transactional
     @Override
