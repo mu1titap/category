@@ -2,8 +2,18 @@ package com.multitab.category.cate.domain;
 
 
 import com.multitab.category.cate.common.entity.BaseEntity;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @ToString
 @Getter
@@ -11,16 +21,19 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "top_category", uniqueConstraints = {@UniqueConstraint(columnNames = {"category_code", "category_name"} )})
+@Table(name = "top_category", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"category_code", "category_name"})})
 public class TopCategory extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    @Column(name = "category_name" ,nullable = false, length = 30)
+    private Long id;
+    @Column(name = "category_name", nullable = false, length = 30)
     private String categoryName;
-    @Column(name = "category_order" ,nullable = false)
+    @Column(name = "category_order", nullable = false)
     private Integer categoryOrder;
-    @Column(name = "category_code" ,nullable = false, length = 20)
+    @Column(name = "category_code", nullable = false, length = 20)
     private String categoryCode;
+
+
 }

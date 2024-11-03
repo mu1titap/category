@@ -12,18 +12,19 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "middle_category", uniqueConstraints = {@UniqueConstraint(columnNames = {"category_code", "category_name"} )})
+@Table(name = "middle_category", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"category_code", "category_name"})})
 @Entity
 public class MiddleCategory extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    @Column(name = "category_name" ,nullable = false, length = 30)
+    private Long id;
+    @Column(name = "category_name", nullable = false, length = 30)
     private String categoryName;
-    @Column(name = "category_order" ,nullable = false)
+    @Column(name = "category_order", nullable = false)
     private Integer categoryOrder;
-    @Column(name = "category_code" ,nullable = false, length = 20)
+    @Column(name = "category_code", nullable = false, length = 20)
     private String categoryCode;
 
     @ManyToOne(fetch = FetchType.LAZY)

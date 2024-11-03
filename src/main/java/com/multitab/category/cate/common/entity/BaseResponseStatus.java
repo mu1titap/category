@@ -1,4 +1,5 @@
 package com.multitab.category.cate.common.entity;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -9,7 +10,7 @@ import org.springframework.http.HttpStatusCode;
 
 @Getter
 @AllArgsConstructor
-public enum     BaseResponseStatus {
+public enum BaseResponseStatus {
 
     /**
      * 2XX: Success(성공)
@@ -54,7 +55,7 @@ public enum     BaseResponseStatus {
     // Category
     NO_EXIST_CATEGORY(HttpStatus.NOT_FOUND, false, 404, "존재하지 않는 카테고리입니다."),
     DUPLICATED_CATEGORY_NAME(HttpStatus.CONFLICT, false, 409, "이미 존재하는 카테고리 이름입니다."),
-
+    NO_EXIST_PARENT_CATEGORYCODE(HttpStatus.NOT_FOUND, false, 410, "부모 카테고리 코드가 존재하지 않습니다."),
     // Interest (could be Global not found?)
     NO_EXIST_INTEREST(HttpStatus.NOT_FOUND, false, 404, "존재하지 않는 관심사입니다."),
 

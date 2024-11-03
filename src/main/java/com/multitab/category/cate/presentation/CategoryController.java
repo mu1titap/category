@@ -2,20 +2,30 @@ package com.multitab.category.cate.presentation;
 
 import com.multitab.category.cate.application.CategoryService;
 import com.multitab.category.cate.common.entity.BaseResponse;
-import com.multitab.category.cate.common.entity.BaseResponseStatus;
 import com.multitab.category.cate.dto.in.MiddleCategoryRequestDto;
 import com.multitab.category.cate.dto.in.TopCategoryRequestDto;
-import com.multitab.category.cate.dto.out.*;
+import com.multitab.category.cate.dto.in.UpdateCategoryRequeestDto;
+import com.multitab.category.cate.dto.out.ChildCategoryResponseDto;
+import com.multitab.category.cate.dto.out.MiddleCategoryResponseDto;
+import com.multitab.category.cate.dto.out.TopCategoryResponseDto;
 import com.multitab.category.cate.vo.in.MiddleCategoryRequestVo;
 import com.multitab.category.cate.vo.in.TopCategoryRequestVo;
-import com.multitab.category.cate.vo.out.*;
+import com.multitab.category.cate.vo.in.UpdateCategoryRequestVo;
+import com.multitab.category.cate.vo.out.ChildCategoryResponseVo;
+import com.multitab.category.cate.vo.out.MiddleCategoryResponseVo;
+import com.multitab.category.cate.vo.out.TopCategoryResponseVo;
 import io.swagger.v3.oas.annotations.Operation;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,46 +40,49 @@ public class CategoryController {
     @PostMapping("/top-category")
     @Operation(summary = "대 카테고리 생성", description = "대 카테고리 생성 카테고리명, 소개 입력")
     public BaseResponse<TopCategoryResponseVo> createTopCategory(
-            @RequestBody TopCategoryRequestVo topCategoryRequestVo) {
+        @RequestBody TopCategoryRequestVo topCategoryRequestVo) {
 
         log.info("topCategoryRequestVo : {}", topCategoryRequestVo);
         TopCategoryRequestDto topCategoryRequestDto = TopCategoryRequestDto.builder()
-                .topCategoryName(topCategoryRequestVo.getTopCategoryName())
-                .categoryOrder(topCategoryRequestVo.getCategoryOrder())
-                .build();
+            .topCategoryName(topCategoryRequestVo.getTopCategoryName())
+            .categoryOrder(topCategoryRequestVo.getCategoryOrder())
+            .build();
         ;
         return new BaseResponse<>(categoryService.createTopCategory(topCategoryRequestDto).toVo());
     }
 
-    @Operation(summary = "대 카테고리 조회", description = "카테고리 코드로 대 카테고리 단건 조회")
+    @Operation(summary = "대 카테고리 단건 조회", description = "카테고리 코드로 대 카테고리 단건 조회")
     @GetMapping("/top-category/{topCategoryCode}")
     public BaseResponse<TopCategoryResponseVo> getTopCategory(
-            @PathVariable("topCategoryCode") String topCategoryCode) {
+        @PathVariable("topCategoryCode") String topCategoryCode) {
         log.info("topCategoryCode : {}", topCategoryCode);
-        return new BaseResponse<>(categoryService.getTopCategoryByCategoryCode(topCategoryCode).toVo());
+        return new BaseResponse<>(
+            categoryService.getTopCategoryByCategoryCode(topCategoryCode).toVo());
     }
 
     @Operation(summary = "중 카테고리 생성", description = "중 카테고리 생성 카테고리명, 소개 , 대 카테고리 코드 입력")
     @PostMapping("/middle-category")
     public BaseResponse<MiddleCategoryResponseVo> createMiddleCategory(
-            @RequestBody MiddleCategoryRequestVo middleCategoryRequestVo) {
+        @RequestBody MiddleCategoryRequestVo middleCategoryRequestVo) {
 
         MiddleCategoryRequestDto middleCategoryRequestDto = MiddleCategoryRequestDto.builder()
-                .middleCategoryName(middleCategoryRequestVo.getMiddleCategoryName())
-                .categoryOrder(middleCategoryRequestVo.getCategoryOrder())
-                .topCategoryCode(middleCategoryRequestVo.getTopCategoryCode())
-                .build();
+            .middleCategoryName(middleCategoryRequestVo.getMiddleCategoryName())
+            .categoryOrder(middleCategoryRequestVo.getCategoryOrder())
+            .topCategoryCode(middleCategoryRequestVo.getTopCategoryCode())
+            .build();
         log.info("middleCategoryRequestDto : {}", middleCategoryRequestDto);
 
-        return new BaseResponse<>(categoryService.createMiddleCategory(middleCategoryRequestDto).toVo());
+        return new BaseResponse<>(
+            categoryService.createMiddleCategory(middleCategoryRequestDto).toVo());
     }
 
-    @Operation(summary = "중 카테고리의 조회")
+    @Operation(summary = "중 카테고리의 단건 조회")
     @GetMapping("/middle-category/{middleCategoryCode}")
     public BaseResponse<MiddleCategoryResponseVo> getMiddleCategory(
-            @PathVariable("middleCategoryCode") String middleCategoryCode) {
+        @PathVariable("middleCategoryCode") String middleCategoryCode) {
         log.info("middleCategoryCode : {}", middleCategoryCode);
-        return new BaseResponse<>(categoryService.getMiddleCategoryByCategoryCode(middleCategoryCode).toVo());
+        return new BaseResponse<>(
+            categoryService.getMiddleCategoryByCategoryCode(middleCategoryCode).toVo());
     }
 
     @Operation(summary = "대 카테고리 목록 조회")
@@ -77,34 +90,54 @@ public class CategoryController {
     public BaseResponse<List<TopCategoryResponseVo>> getTopCategories() {
 
         return new BaseResponse<>(
-                categoryService.getTopCategories()
-                        .stream()
-                        .map(TopCategoryResponseDto::toVo)
-                        .collect(Collectors.toList()));
+            categoryService.getTopCategories()
+                .stream()
+                .map(TopCategoryResponseDto::toVo)
+                .collect(Collectors.toList()));
     }
 
     @Operation(summary = "대 카테고리의 자식 카테고리 목록 조회")
     @GetMapping("/middle-categories/{topCategoryCode}")
     public BaseResponse<List<MiddleCategoryResponseVo>> getMiddleCategories(
-            @PathVariable("topCategoryCode") String topCategoryCode) {
+        @PathVariable("topCategoryCode") String topCategoryCode) {
 
         return new BaseResponse<>(
-                categoryService.getMiddleCategories(topCategoryCode)
-                        .stream()
-                        .map(MiddleCategoryResponseDto::toVo)
-                        .collect(Collectors.toList()));
+            categoryService.getMiddleCategories(topCategoryCode)
+                .stream()
+                .map(MiddleCategoryResponseDto::toVo)
+                .collect(Collectors.toList()));
     }
 
     @Operation(summary = "대 카테고리의 자식 카테고리 조회", description = "중 카테고리의 자식까지만 조회됨. 하 카테고리는 조회안됨")
     @GetMapping("/top-category/child/{categoryCode}")
     public BaseResponse<List<ChildCategoryResponseVo>> findChildCategoriesByTopCategoryV1(
-            @PathVariable("categoryCode") String categoryCode) {
+        @PathVariable("categoryCode") String categoryCode) {
 
         return new BaseResponse<>(
-                categoryService.findChildCategoriesByTopCategory(categoryCode)
-                        .stream()
-                        .map(ChildCategoryResponseDto::toVo)
-                        .collect(Collectors.toList()));
+            categoryService.findChildCategoriesByTopCategory(categoryCode)
+                .stream()
+                .map(ChildCategoryResponseDto::toVo)
+                .collect(Collectors.toList()));
     }
+
+
+    @Operation(summary = "대 카테고리의 수정", description = "대카테고리의 경우 parentCode 입력 x")
+    @PutMapping("/top-category")
+    public BaseResponse<Void> updateTopCategory(
+        @RequestBody UpdateCategoryRequestVo updateCategoryRequestVo) {
+
+        categoryService.updateTopCategory(UpdateCategoryRequeestDto.of(updateCategoryRequestVo));
+        return new BaseResponse<>();
+    }
+
+    @Operation(summary = "중 카테고리의 수정")
+    @PutMapping("/middle-category")
+    public BaseResponse<Void> updateMiddleCategory(
+        @RequestBody UpdateCategoryRequestVo updateCategoryRequestVo) {
+
+        categoryService.updateMiddleCategory(UpdateCategoryRequeestDto.of(updateCategoryRequestVo));
+        return new BaseResponse<>();
+    }
+
 
 }

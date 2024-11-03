@@ -12,25 +12,24 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 
-
 @Repository
 @RequiredArgsConstructor
-public class CategorySearchImpl implements  CategorySearch{
+public class CategorySearchImpl implements CategorySearch {
 
     private final JPAQueryFactory queryFactory;
     private final TopCategoryRepository topCategoryRepository;
 
     @Override
     public List<ChildCategoryResponseDto> findChildCategoriesByTopCategory(String categoryCode) {
-        Integer parent_id = topCategoryRepository.findByCategoryCode(categoryCode).orElseThrow().getId();
+        Long parent_id = topCategoryRepository.findByCategoryCode(categoryCode).orElseThrow()
+            .getId();
         return queryFactory
-                .select(new QChildCategoryResponseDto(middleCategory.categoryCode,middleCategory.categoryName))
-                .from(middleCategory)
-                .where(middleCategory.topCategory.id.eq(parent_id))
-                .fetch();
+            .select(new QChildCategoryResponseDto(middleCategory.categoryCode,
+                middleCategory.categoryName))
+            .from(middleCategory)
+            .where(middleCategory.topCategory.id.eq(parent_id))
+            .fetch();
     }
-
-
 
 
 }
