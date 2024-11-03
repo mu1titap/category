@@ -122,11 +122,30 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteTopCategory(Long topCategoryId) {
+        TopCategory topCategory = topCategoryRepository
+            .findById(topCategoryId)
+            .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_EXIST_CATEGORY));
 
+        List<ChildCategoryResponseDto> childCategories = categorySearch
+            .findChildCategoriesByTopCategory(topCategory.getCategoryCode());
+
+        for (ChildCategoryResponseDto childCategory : childCategories) {
+            Long childCategoryId = middleCategoryRepository.findByCategoryCode(
+                    childCategory.getCategoryCode()).orElseThrow()
+                .getId();
+            deleteMiddleCategory(childCategoryId);
+        }
+
+        topCategoryRepository.deleteById(topCategoryId);
     }
 
     @Override
     public void deleteMiddleCategory(Long middleCategoryId) {
+        MiddleCategory middleCategory = middleCategoryRepository
+            .findById(middleCategoryId)
+            .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_EXIST_CATEGORY));
+
+        middleCategoryRepository.deleteById(middleCategoryId);
 
     }
 

@@ -19,12 +19,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -136,6 +138,24 @@ public class CategoryController {
         @RequestBody UpdateCategoryRequestVo updateCategoryRequestVo) {
 
         categoryService.updateMiddleCategory(UpdateCategoryRequeestDto.of(updateCategoryRequestVo));
+        return new BaseResponse<>();
+    }
+
+    @Operation(summary = "대 카테고리의 삭제")
+    @DeleteMapping("/top-category")
+    public BaseResponse<Void> deleteTopCategory(
+        @RequestParam Long topCategoryId) {
+
+        categoryService.deleteTopCategory(topCategoryId);
+        return new BaseResponse<>();
+    }
+
+    @Operation(summary = "중 카테고리의 삭제")
+    @DeleteMapping("/middle-category")
+    public BaseResponse<Void> deleteMiddleCategory(
+        @RequestParam Long middleCategoryId) {
+
+        categoryService.deleteMiddleCategory(middleCategoryId);
         return new BaseResponse<>();
     }
 
