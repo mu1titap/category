@@ -28,6 +28,7 @@ public class MiddleCategory extends BaseEntity {
     private String categoryCode;
 
     @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "top_category_id", referencedColumnName = "id", nullable = false)
     private TopCategory topCategory;
 
 }
