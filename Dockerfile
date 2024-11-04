@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY build/libs/category-0.0.1-SNAPSHOT.jar category-service.jar
 
-EXPOSE 8080
+EXPOSE 9000
 
 ENTRYPOINT ["java", "-jar", "category-service.jar"]
 
