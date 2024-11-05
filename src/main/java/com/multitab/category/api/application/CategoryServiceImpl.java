@@ -67,12 +67,17 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public MiddleCategoryResponseDto createMiddleCategory(
         MiddleCategoryRequestDto middleCategoryRequestDto) {
+        // unique 제약 조건 확인
+        List<MiddleCategoryResponseDto> middleCategoryResponseDtos =
+            getMiddleCategories(middleCategoryRequestDto.getTopCategoryCode());
 
-        if (middleCategoryRepository.existsByCategoryName(
-            middleCategoryRequestDto.getMiddleCategoryName())) {
-            throw new BaseException(BaseResponseStatus.DUPLICATED_CATEGORY_NAME);
+        for (MiddleCategoryResponseDto middleCategoryResponseDto : middleCategoryResponseDtos) {
+            if (middleCategoryResponseDto.getMiddleCategoryName()
+                .equals(middleCategoryRequestDto.getMiddleCategoryName())) {
+                throw new BaseException(BaseResponseStatus.DUPLICATED_CATEGORY_NAME);
+            }
         }
-
+        // create
         String categoryCode = generateUniqueCategoryCode("MC-");
         try {
             TopCategory topCategory = topCategoryRepository.findByCategoryCode(
@@ -89,12 +94,14 @@ public class CategoryServiceImpl implements CategoryService {
             log.error("An unexpected error occurred: ", e);
             throw new BaseException(BaseResponseStatus.INTERNAL_SERVER_ERROR);
         }
+
         return MiddleCategoryResponseDto.builder()
             .middleCategoryName(middleCategoryRequestDto.getMiddleCategoryName())
             .middleCategoryOrder(middleCategoryRequestDto.getCategoryOrder())
             .topCategoryCode(middleCategoryRequestDto.getTopCategoryCode())
             .middleCategoryCode(categoryCode)
             .build();
+
     }
 
 

@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "middle_category", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"category_code", "category_name"})})
 @Entity
 public class MiddleCategory extends BaseEntity {
 
