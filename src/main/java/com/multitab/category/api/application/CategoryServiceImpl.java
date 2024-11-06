@@ -1,8 +1,5 @@
 package com.multitab.category.api.application;
 
-import com.multitab.category.common.Exception.BaseException;
-import com.multitab.category.common.entity.BaseResponseStatus;
-import com.multitab.category.common.utils.CategoryCodeGenerator;
 import com.multitab.category.api.domain.MiddleCategory;
 import com.multitab.category.api.domain.TopCategory;
 import com.multitab.category.api.dto.in.MiddleCategoryRequestDto;
@@ -14,13 +11,16 @@ import com.multitab.category.api.dto.out.TopCategoryResponseDto;
 import com.multitab.category.api.infrastructure.MiddleCategoryRepository;
 import com.multitab.category.api.infrastructure.TopCategoryRepository;
 import com.multitab.category.api.infrastructure.search.CategorySearch;
+import com.multitab.category.api.kafka.KafkaProducer;
+import com.multitab.category.common.Exception.BaseException;
+import com.multitab.category.common.entity.BaseResponseStatus;
+import com.multitab.category.common.utils.CategoryCodeGenerator;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,6 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final TopCategoryRepository topCategoryRepository;
     private final MiddleCategoryRepository middleCategoryRepository;
     private final CategorySearch categorySearch;
+    private final KafkaProducer kafkaProducer;
 
 
     private static final int MAX_CODE_TRIES = 5;  // 최대 재시도 횟수
@@ -114,6 +115,9 @@ public class CategoryServiceImpl implements CategoryService {
 
         topCategoryRepository.save(updateCategoryRequeestDto.toTopCategory(
             topCategory.getId()));
+        log.info("here");
+        // kafka publish
+        kafkaProducer.sendUpdateMentoring("update-category", updateCategoryRequeestDto);
     }
 
     @Transactional

@@ -122,7 +122,7 @@ public class CategoryController {
     }
 
 
-    @Operation(summary = "대 카테고리의 수정", description = "대카테고리의 경우 parentCode 입력 x")
+    @Operation(summary = "대 카테고리의 수정", description = "parentCode 아무 값이나 상관 없음")
     @PutMapping("/top-category")
     public BaseResponse<Void> updateTopCategory(
         @RequestBody UpdateCategoryRequestVo updateCategoryRequestVo) {
