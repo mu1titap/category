@@ -60,6 +60,7 @@ public class CategoryServiceImpl implements CategoryService {
         return TopCategoryResponseDto.builder()
             .topCategoryName(topCategoryRequestDto.getTopCategoryName())
             .topCategoryCode(categoryCode)
+            .categoryType(topCategoryRequestDto.getCategoryType())
             .build();
 
     }
@@ -176,6 +177,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .id(topCategory.getId())
                 .topCategoryName(topCategory.getCategoryName())
                 .topCategoryCode(topCategory.getCategoryCode())
+                .categoryType(topCategory.getCategoryType())
                 .build();
         } catch (Exception e) {
             log.error("error : {}", e);
@@ -218,6 +220,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .id(topCategory.getId())
                 .topCategoryName(topCategory.getCategoryName())
                 .topCategoryCode(topCategory.getCategoryCode())
+                .categoryType(topCategory.getCategoryType())
                 .build()
         ).toList();
     }

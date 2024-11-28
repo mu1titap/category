@@ -1,5 +1,6 @@
 package com.multitab.category.api.vo.out;
 
+import com.multitab.category.api.domain.CategoryType;
 import lombok.*;
 
 @Builder
@@ -12,6 +13,7 @@ public class TopCategoryResponseVo {
     private Long id;
     private String topCategoryCode;
     private String topCategoryName;
+    private CategoryType categoryType;
 
 
 }
