@@ -11,6 +11,7 @@ import com.multitab.category.api.vo.out.MiddleCategoryResponseVo;
 import com.multitab.category.api.vo.out.TopCategoryResponseVo;
 import com.multitab.category.common.entity.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/category")
+@Tag(name = "카테고리 관련 주요 API")
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -34,8 +36,7 @@ public class CategoryController {
     // 대 카테고리 생성
     @PostMapping("/top-category")
     @Operation(summary = "대 카테고리 생성", description = "대 카테고리 생성 카테고리명, 소개 입력 <br>"
-        + "categoryType 은 INDUSTRY, DOMAIN 으로 구분"
-        , tags = "1. main-controller")
+        + "categoryType 은 INDUSTRY, DOMAIN 으로 구분")
     public BaseResponse<TopCategoryResponseVo> createTopCategory(
         @RequestBody TopCategoryRequestVo topCategoryRequestVo) {
 
@@ -47,8 +48,7 @@ public class CategoryController {
         return new BaseResponse<>(categoryService.createTopCategory(topCategoryRequestDto).toVo());
     }
 
-    @Operation(summary = "대 카테고리 단건 조회", description = "카테고리 코드로 대 카테고리 단건 조회",
-        tags = "1. main-controller")
+    @Operation(summary = "대 카테고리 단건 조회", description = "카테고리 코드로 대 카테고리 단건 조회")
     @GetMapping("/top-category/{topCategoryCode}")
     public BaseResponse<TopCategoryResponseVo> getTopCategory(
         @PathVariable("topCategoryCode") String topCategoryCode) {
@@ -57,8 +57,7 @@ public class CategoryController {
             categoryService.getTopCategoryByCategoryCode(topCategoryCode).toVo());
     }
 
-    @Operation(summary = "중 카테고리 생성", description = "중 카테고리 생성 카테고리명, 소개 , 대 카테고리 코드 입력",
-        tags = "1. main-controller")
+    @Operation(summary = "중 카테고리 생성", description = "중 카테고리 생성 카테고리명, 소개 , 대 카테고리 코드 입력")
     @PostMapping("/middle-category")
     public BaseResponse<MiddleCategoryResponseVo> createMiddleCategory(
         @RequestBody MiddleCategoryRequestVo middleCategoryRequestVo) {
@@ -74,7 +73,7 @@ public class CategoryController {
             categoryService.createMiddleCategory(middleCategoryRequestDto).toVo());
     }
 
-    @Operation(summary = "중 카테고리의 단건 조회", tags = "1. main-controller")
+    @Operation(summary = "중 카테고리의 단건 조회")
     @GetMapping("/middle-category/{middleCategoryCode}")
     public BaseResponse<MiddleCategoryResponseVo> getMiddleCategory(
         @PathVariable("middleCategoryCode") String middleCategoryCode) {
@@ -83,7 +82,7 @@ public class CategoryController {
             categoryService.getMiddleCategoryByCategoryCode(middleCategoryCode).toVo());
     }
 
-    @Operation(summary = "대 카테고리 목록 조회", tags = "1. main-controller")
+    @Operation(summary = "대 카테고리 목록 조회")
     @GetMapping("/top-categories")
     public BaseResponse<List<TopCategoryResponseVo>> getTopCategories() {
 
@@ -94,7 +93,7 @@ public class CategoryController {
                 .collect(Collectors.toList()));
     }
 
-    @Operation(summary = "대 카테고리의 자식 카테고리 목록 조회", tags = "1. main-controller")
+    @Operation(summary = "대 카테고리의 자식 카테고리 목록 조회")
     @GetMapping("/middle-categories/{topCategoryCode}")
     public BaseResponse<List<MiddleCategoryResponseVo>> getMiddleCategories(
         @PathVariable("topCategoryCode") String topCategoryCode) {
