@@ -7,6 +7,7 @@ import com.multitab.category.api.vo.in.UpdateCategoryRequestVo;
 import com.multitab.category.api.vo.out.ChildCategoryResponseVo;
 import com.multitab.category.common.entity.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +25,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/category")
+@Tag(name = "카테고리 관련 보조 API")
 public class CategoryTempController {
 
     private final CategoryService categoryService;
 
-    @Operation(summary = "대 카테고리의 자식 카테고리 조회", description = "중 카테고리의 자식까지만 조회됨. 하 카테고리는 조회안됨"
-        , tags = "2. sub-controller")
+    @Operation(summary = "대 카테고리의 자식 카테고리 조회", description = "중 카테고리의 자식까지만 조회됨. 하 카테고리는 조회안됨")
     @GetMapping("/top-category/child/{categoryCode}")
     public BaseResponse<List<ChildCategoryResponseVo>> findChildCategoriesByTopCategoryV1(
         @PathVariable("categoryCode") String categoryCode) {
@@ -42,8 +43,7 @@ public class CategoryTempController {
     }
 
 
-    @Operation(summary = "대 카테고리의 수정", description = "parentCode 아무 값이나 상관 없음"
-        , tags = "2. sub-controller")
+    @Operation(summary = "대 카테고리의 수정", description = "parentCode 아무 값이나 상관 없음")
     @PutMapping("/top-category")
     public BaseResponse<Void> updateTopCategory(
         @RequestBody UpdateCategoryRequestVo updateCategoryRequestVo) {
@@ -52,8 +52,7 @@ public class CategoryTempController {
         return new BaseResponse<>();
     }
 
-    @Operation(summary = "중 카테고리의 수정"
-        , tags = "2. sub-controller")
+    @Operation(summary = "중 카테고리의 수정")
     @PutMapping("/middle-category")
     public BaseResponse<Void> updateMiddleCategory(
         @RequestBody UpdateCategoryRequestVo updateCategoryRequestVo) {
@@ -62,7 +61,7 @@ public class CategoryTempController {
         return new BaseResponse<>();
     }
 
-    @Operation(summary = "대 카테고리의 삭제", tags = "2. sub-controller")
+    @Operation(summary = "대 카테고리의 삭제")
     @DeleteMapping("/top-category")
     public BaseResponse<Void> deleteTopCategory(
         @RequestParam Long topCategoryId) {
@@ -71,7 +70,7 @@ public class CategoryTempController {
         return new BaseResponse<>();
     }
 
-    @Operation(summary = "중 카테고리의 삭제", tags = "2. sub-controller")
+    @Operation(summary = "중 카테고리의 삭제")
     @DeleteMapping("/middle-category")
     public BaseResponse<Void> deleteMiddleCategory(
         @RequestParam Long middleCategoryId) {
