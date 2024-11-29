@@ -36,7 +36,7 @@ public class CategoryController {
     // 대 카테고리 생성
     @PostMapping("/top-category")
     @Operation(summary = "대 카테고리 생성", description = "대 카테고리 생성 카테고리명, 소개 입력 <br>"
-        + "categoryType 은 INDUSTRY, DOMAIN 으로 구분")
+        + "categoryType 은 JOB(직무), DOMAIN(방법) 으로 구분")
     public BaseResponse<TopCategoryResponseVo> createTopCategory(
         @RequestBody TopCategoryRequestVo topCategoryRequestVo) {
 
