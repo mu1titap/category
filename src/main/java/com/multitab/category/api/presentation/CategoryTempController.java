@@ -53,7 +53,7 @@ public class CategoryTempController {
         return new BaseResponse<>();
     }
 
-    @Operation(summary = "중 카테고리의 수정")
+    @Operation(summary = "중 카테고리의 이름 수정", description = "카테고리 코드로 접근 후 요청된 이름 값으로 수정")
     @PutMapping("/middle-category")
     public BaseResponse<Void> updateMiddleCategory(
         @RequestBody UpdateCategoryRequestVo updateCategoryRequestVo) {
