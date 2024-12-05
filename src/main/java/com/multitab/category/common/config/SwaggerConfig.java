@@ -35,6 +35,7 @@ public class SwaggerConfig {
             .components(components)
             .addServersItem(new Server().url(swaggerUri))
             .info(apiInfo());
+        
     }
 
     private Info apiInfo() {
