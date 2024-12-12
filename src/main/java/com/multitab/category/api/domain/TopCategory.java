@@ -39,7 +39,7 @@ public class TopCategory extends BaseEntity {
     @Column(name = "category_type")
     @Enumerated(EnumType.STRING)
     private CategoryType categoryType;
-    @Column(name = "image_url")
+    @Column(name = "image_url", nullable = true)
     private String imageUrl;
 
 

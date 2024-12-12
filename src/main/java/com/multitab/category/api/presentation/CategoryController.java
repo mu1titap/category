@@ -43,6 +43,9 @@ public class CategoryController {
         log.info("topCategoryRequestVo : {}", topCategoryRequestVo);
         TopCategoryRequestDto topCategoryRequestDto = TopCategoryRequestDto.builder()
             .topCategoryName(topCategoryRequestVo.getTopCategoryName())
+            .imageUrl(
+                topCategoryRequestVo.getImageUrl() != null ? topCategoryRequestVo.getImageUrl()
+                    : null)
             .build();
         ;
         return new BaseResponse<>(categoryService.createTopCategory(topCategoryRequestDto).toVo());
