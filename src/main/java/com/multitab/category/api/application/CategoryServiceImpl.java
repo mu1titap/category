@@ -61,6 +61,7 @@ public class CategoryServiceImpl implements CategoryService {
             .topCategoryName(topCategoryRequestDto.getTopCategoryName())
             .topCategoryCode(categoryCode)
             .categoryType(topCategoryRequestDto.getCategoryType())
+            .imageUrl(topCategoryRequestDto.getImageUrl())
             .build();
 
     }
@@ -221,6 +222,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .topCategoryName(topCategory.getCategoryName())
                 .topCategoryCode(topCategory.getCategoryCode())
                 .categoryType(topCategory.getCategoryType())
+                .imageUrl(topCategory.getImageUrl())
                 .build()
         ).toList();
     }
