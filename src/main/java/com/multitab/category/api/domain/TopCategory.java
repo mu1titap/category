@@ -39,7 +39,7 @@ public class TopCategory extends BaseEntity {
     @Column(name = "category_type")
     @Enumerated(EnumType.STRING)
     private CategoryType categoryType;
-    @Column(name = "image_url", nullable = true)
+    @Column(name = "image_url", nullable = true, columnDefinition = "VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci")
     private String imageUrl;
 
 
